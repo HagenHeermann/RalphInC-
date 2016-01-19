@@ -1,0 +1,8 @@
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\ProjectFolder\CsharpRalphBot\CsharpRalphBot\bin\Debug\CsharpRalphBot.exe.config
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\ProjectFolder\CsharpRalphBot\CsharpRalphBot\bin\Debug\CsharpRalphBot.exe
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\ProjectFolder\CsharpRalphBot\CsharpRalphBot\bin\Debug\CsharpRalphBot.pdb
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\ProjectFolder\CsharpRalphBot\CsharpRalphBot\obj\Debug\CsharpRalphBot.csprojResolveAssemblyReference.cache
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\ProjectFolder\CsharpRalphBot\CsharpRalphBot\obj\Debug\CsharpRalphBot.exe
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\ProjectFolder\CsharpRalphBot\CsharpRalphBot\obj\Debug\CsharpRalphBot.pdb
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\ProjectFolder\CsharpRalphBot\CsharpRalphBot\bin\Debug\Meebey.SmartIrc4net.dll
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\ProjectFolder\CsharpRalphBot\CsharpRalphBot\bin\Debug\StarkSoftProxy.dll
