@@ -46,7 +46,7 @@ namespace CsharpRalphBot.Handler
                     res = getCommands();
                     break;
                 case "#upgrade":
-                    res = upgradeMine();
+                    res = upgradeMine(msg);
                     break;
                 case "#buildBarracks":
                     res = buildBarracks();
@@ -169,9 +169,28 @@ namespace CsharpRalphBot.Handler
             return res;
         }
 
-        private string upgradeMine()
+        private string upgradeMine(IrcMessageData msg)
         {
-            return "mine";
+            string res = null;
+            string sender = realName(msg.From).ToLower();
+            Boolean senderRegistered = _database.isUserRegistered(sender);
+            if (senderRegistered)
+            {
+                int playerMineLevel = _database.selectMine(sender);
+                int playerGold = _database.selectGold(sender);
+                if(playerGold >= playerMineLevel * 100)
+                {
+                    _database.updateMine(sender, playerMineLevel + 1);
+                    _database.updateGold(sender, playerGold - (playerMineLevel * 100));
+                    res = sender + "'s mine was upgraded to level " + playerMineLevel + 1+".";
+                }
+                else
+                {
+                    res = sender + " you dont have enough gold to upgrade your mine!";
+                }
+                   
+            }
+            return res;
         }
 
         private string buildUnits()
