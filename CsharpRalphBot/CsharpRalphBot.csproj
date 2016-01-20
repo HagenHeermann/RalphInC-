@@ -49,13 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DumberLogger.cs" />
-    <Compile Include="Ralph.cs" />
-    <Compile Include="StartMeUp.cs" />
+    <Compile Include="Handler\Handler.cs" />
+    <Compile Include="Handler\HandlerIdentifier.cs" />
+    <Compile Include="Utility\DumberLogger.cs" />
+    <Compile Include="Main\Ralph.cs" />
+    <Compile Include="Main\StartMeUp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Database\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

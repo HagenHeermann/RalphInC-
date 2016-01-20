@@ -10,9 +10,11 @@ namespace CsharpRalphBot
     {
         static void Main(string[] args)
         {
+            Boolean alive=true;
             string nameIn;
             string tokenIn;
             string channelIn;
+            string end;
             Console.WriteLine("enter token: ");
             tokenIn = Console.ReadLine();
             Console.WriteLine("enter name: ");
@@ -24,7 +26,14 @@ namespace CsharpRalphBot
             ralph.connectRalph();
             ralph.sendMessage("MingLee");
 
-            Console.ReadKey();//just for the wait
+            while (alive)
+            {
+                end = Console.ReadLine();
+                if (end == "kill")
+                {
+                    alive = false;
+                }
+            }
 
         }
 
