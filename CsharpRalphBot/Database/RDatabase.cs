@@ -42,31 +42,57 @@ namespace CsharpRalphBot.Database
                 ",UNITS INT NOT NULL)";
             SQLiteCommand command = new SQLiteCommand(stmt, _connection);
             command.ExecuteNonQuery();
+            DumberLogger.log("Database: CraftWar table created");
         }
 
+        /// <summary>
+        /// Method to add a new player to the database
+        /// </summary>
+        /// <param name="username"></param>
         public void addPlayerToCraftWar(string username)
         {
             string stmt = "";
         }
-        //Select Section
 
+        //Select Section
+        /// <summary>
+        /// Returns the gold value of a listed player
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public int selectGold(string username)
         {
             string stmt = "";
             return 0;
         }
 
+        /// <summary>
+        /// Returns the value set to the barracks 0 = no barracks else barracks exists
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public int selectBarracks(string username)
         {
             string stmt = "";
             return 0;
         }
 
+        /// <summary>
+        /// Returns the mine level of a listed player
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public int selectMine(string username)
         {
             string stmt = "";
             return 0;
         }
+
+        /// <summary>
+        /// Returns the units of a listed player
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public int selectUnits(string username)
         {
             string stmt = "";
@@ -75,21 +101,41 @@ namespace CsharpRalphBot.Database
 
         //Update Section
 
+        /// <summary>
+        /// Method to update the gold of a listed player
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="value"></param>
         public void updateGold(string username,int value)
         {
             string stmt = "";
         }
 
+        /// <summary>
+        /// Method to update the barracks of a listed player
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="value"></param>
         public void updateBarracks(string username,int value)
         {
             string stmt = "";
         }
 
+        /// <summary>
+        /// Method to update the Mine level of a listed player
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="value"></param>
         public void updateMine(string username, int value)
         {
             string stmt = "";
         }
 
+        /// <summary>
+        /// Method to update the Unit number of a listed player
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="value"></param>
         public void updateUnits(string username,int value)
         {
             string stmt = "";

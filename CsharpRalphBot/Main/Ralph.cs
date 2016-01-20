@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using Meebey.SmartIrc4net;
 using CsharpRalphBot.Handler;
+using CsharpRalphBot.Database;
 
 namespace CsharpRalphBot
 {
@@ -21,6 +22,7 @@ namespace CsharpRalphBot
         private const int portnum = 6667;
         private IrcClient _client;
         private HandlerIdentifier identifier;
+        private RDatabase _database;
 
         public Ralph(String _channel,String _token,String _name)
         {
