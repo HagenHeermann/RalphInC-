@@ -54,7 +54,6 @@ namespace CsharpRalphBot.Handler
                     res = null;
                     break;
             }
-            
             return res;
         }
 

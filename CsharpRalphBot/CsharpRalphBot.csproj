@@ -54,6 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\RDatabase.cs" />
+    <Compile Include="Handler\Component.cs" />
+    <Compile Include="Handler\CraftWarComp.cs" />
     <Compile Include="Handler\RHandler.cs" />
     <Compile Include="Utility\DumberLogger.cs" />
     <Compile Include="Main\Ralph.cs" />

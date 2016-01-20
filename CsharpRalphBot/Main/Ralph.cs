@@ -23,7 +23,6 @@ namespace CsharpRalphBot
         private string _token;
         private const int portnum = 6667;
         private IrcClient _client;
-        private RDatabase _database;
         private RHandler _handler;
 
         public Ralph(String _channel,String _token,String _name)
