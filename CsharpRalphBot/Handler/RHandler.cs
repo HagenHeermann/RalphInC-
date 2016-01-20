@@ -17,6 +17,7 @@ namespace CsharpRalphBot.Handler
 
         public RHandler(Ralph _ralph)
         {
+            _messages = new BlockingCollection<IrcMessageData>();
             this._ralph = _ralph;
             _handlerThread = new Thread(handle);
             _handlerThread.Start();
@@ -34,8 +35,7 @@ namespace CsharpRalphBot.Handler
             while (true)
             {
                 IrcMessageData mToHandle = _messages.Take();
-                string[] splittedM = mToHandle.Message.Split(' ');
-                if (splittedM[0] == "\test")
+                if (mToHandle.MessageArray[0] == "#test")
                 {
                     _ralph.sendMessage("test");
                 }

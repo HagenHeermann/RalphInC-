@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.SQLite;
-
+using System.Collections.Generic;
 namespace CsharpRalphBot.Database
 {
     class RDatabase
@@ -35,11 +35,7 @@ namespace CsharpRalphBot.Database
         /// </summary>
         public void createCraftWarTable()
         {
-            string stmt = "CREATE TABLE CraftWar (USERNAME VARCHAR(100) PRIMARY KEY NOT NULL"+
-                ",GOLD INT NOT NULL"+
-                ",BARRACKS INT NOT NULL"+
-                ",MINE INT NOT NULL+"+
-                ",UNITS INT NOT NULL)";
+            string stmt = "CREATE TABLE CraftWar (USERNAME VARCHAR(100) PRIMARY KEY NOT NULL,GOLD INT NOT NULL,BARRACKS INT NOT NULL,MINE INT NOT NULL,UNITS INT NOT NULL)";
             SQLiteCommand command = new SQLiteCommand(stmt, _connection);
             command.ExecuteNonQuery();
             DumberLogger.log("Database: CraftWar table created");
@@ -142,6 +138,13 @@ namespace CsharpRalphBot.Database
         public void updateUnits(string username,int value)
         {
             string stmt = "";
+        }
+
+        public List<string> getAllPlayers()
+        {
+            List<string> result = new List<string>();
+
+            return result;
         }
     }
 }

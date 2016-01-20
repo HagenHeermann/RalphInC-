@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using Meebey.SmartIrc4net;
 using CsharpRalphBot.Handler;
-using CsharpRalphBot.Database;
 using System.Threading;
 using CsharpRalphBot.Handler;
+using CsharpRalphBot.Database;
 
 namespace CsharpRalphBot
 {
@@ -28,9 +28,10 @@ namespace CsharpRalphBot
 
         public Ralph(String _channel,String _token,String _name)
         {
-            this._token = _token;
-            this._channel = _channel;
-            this._name = _name;
+            this._token = "oauth:"+_token;
+            this._channel = "#ashwinitv";
+            this._name = "AneleBot";
+
             _client = new IrcClient()
             {
                 Encoding = Encoding.UTF8,
