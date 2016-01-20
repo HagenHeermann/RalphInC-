@@ -27,8 +27,8 @@ namespace CsharpRalphBot
 
         public Ralph(String _channel,String _token,String _name)
         {
-            //"oauth:"+_token
-            this._token = "oauth:9qp37fye5p0edw2d7i7htsi4prp960";
+            
+            this._token = "oauth:"+_token;
             this._channel = _channel;
             this._name = "AneleBot";
 
