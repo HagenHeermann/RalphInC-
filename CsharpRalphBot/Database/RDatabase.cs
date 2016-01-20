@@ -13,6 +13,7 @@ namespace CsharpRalphBot.Database
 
         /// <summary>
         /// One time use only
+        /// working(tested)
         /// </summary>
         public void createDatabase()
         {
@@ -22,6 +23,7 @@ namespace CsharpRalphBot.Database
     
         /// <summary>
         /// Method to connect to the database
+        /// working(testet)
         /// </summary>
         public void connectToDatabase()
         {
@@ -32,6 +34,7 @@ namespace CsharpRalphBot.Database
 
         /// <summary>
         /// One time use only
+        /// working(tested)
         /// </summary>
         public void createCraftWarTable()
         {
@@ -43,6 +46,7 @@ namespace CsharpRalphBot.Database
 
         /// <summary>
         /// Method to add a new player to the database
+        /// working(tested)
         /// </summary>
         /// <param name="username"></param>
         public void addPlayerToCraftWar(string username)
@@ -56,58 +60,77 @@ namespace CsharpRalphBot.Database
         //Select Section
         /// <summary>
         /// Returns the gold value of a listed player
+        /// working(tested)
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
         public int selectGold(string username)
         {
             string stmt = "SELECT GOLD FROM CraftWar WHERE USERNAME = '"+username+"'";
-            return 0;
+            SQLiteCommand command = new SQLiteCommand(stmt, _connection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            int res = (int)reader["GOLD"];
+            return res;
         }
 
         /// <summary>
         /// Returns the value set to the barracks 0 = no barracks else barracks exists
+        /// working(tested)
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
         public int selectBarracks(string username)
         {
-            string stmt = "";
-            return 0;
+            string stmt = "SELECT BARRACKS FROM CraftWar WHERE USERNAME ='" + username + "'";
+            SQLiteCommand command = new SQLiteCommand(stmt, _connection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            int res = (int)reader["BARRACKS"];
+            return res;
         }
 
         /// <summary>
         /// Returns the mine level of a listed player
+        /// working (tested)
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
         public int selectMine(string username)
         {
-            string stmt = "";
-            return 0;
+            string stmt = "SELECT MINE FROM CraftWar WHERE USERNAME ='" + username + "'";
+            SQLiteCommand command = new SQLiteCommand(stmt, _connection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            int res = (int)reader["MINE"];
+            return res;
         }
 
         /// <summary>
         /// Returns the units of a listed player
+        /// working (tested)
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
         public int selectUnits(string username)
         {
-            string stmt = "";
-            return 0;
+            string stmt = "SELECT UNITS FROM CraftWar WHERE USERNAME ='" + username + "'";
+            SQLiteCommand command = new SQLiteCommand(stmt, _connection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            int res = (int)reader["UNITS"];
+            return res;
         }
 
         //Update Section
 
         /// <summary>
         /// Method to update the gold of a listed player
+        /// works (tested)
         /// </summary>
         /// <param name="username"></param>
         /// <param name="value"></param>
         public void updateGold(string username,int value)
         {
-            string stmt = "";
+            string stmt = "UPDATE CraftWar SET GOLD ="+value+" WHERE USERNAME='" + username + "'";
+            SQLiteCommand command = new SQLiteCommand(stmt, _connection);
+            command.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -117,7 +140,9 @@ namespace CsharpRalphBot.Database
         /// <param name="value"></param>
         public void updateBarracks(string username,int value)
         {
-            string stmt = "";
+            string stmt = "UPDATE CraftWar SET BARRACKS =" + value + " WHERE USERNAME='" + username + "'";
+            SQLiteCommand command = new SQLiteCommand(stmt, _connection);
+            command.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -127,7 +152,9 @@ namespace CsharpRalphBot.Database
         /// <param name="value"></param>
         public void updateMine(string username, int value)
         {
-            string stmt = "";
+            string stmt = "UPDATE CraftWar SET MINE =" + value + " WHERE USERNAME='" + username + "'";
+            SQLiteCommand command = new SQLiteCommand(stmt, _connection);
+            command.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -137,13 +164,22 @@ namespace CsharpRalphBot.Database
         /// <param name="value"></param>
         public void updateUnits(string username,int value)
         {
-            string stmt = "";
+            string stmt = "UPDATE CraftWar SET UNITS =" + value + " WHERE USERNAME='" + username + "'";
+            SQLiteCommand command = new SQLiteCommand(stmt, _connection);
+            command.ExecuteNonQuery();
         }
 
-        public List<string> getAllPlayers()
+        public string[] getAllPlayers()
         {
-            List<string> result = new List<string>();
-
+            List<string> resultB = new List<string>();
+            string stmt = "SELECT USERNAME FROM CraftWar";
+            SQLiteCommand command = new SQLiteCommand(stmt, _connection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                resultB.Add((string)reader["USERNAME"]);
+            }
+            string[] result = resultB.ToArray();
             return result;
         }
     }
