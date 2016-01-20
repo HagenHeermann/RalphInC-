@@ -37,7 +37,7 @@ namespace CsharpRalphBot.Handler
             switch (com)
             {
                 case "#attack":
-                    res = attack();
+                    res = attack(msg);
                     break;
                 case "#stats":
                     res = stats();
@@ -102,9 +102,55 @@ namespace CsharpRalphBot.Handler
         }
 
 
-        private string attack()
+        private string attack(IrcMessageData msg)
         {
-            return "attack";
+            String res = null;
+            if (msg.MessageArray.Length >= 2)
+            {
+                string attacker = realName(msg.From).ToLower();
+                string defender = realName(msg.MessageArray[1]).ToLower();
+                Boolean regDefender = _database.isUserRegistered(defender);
+                Boolean regAttacker = _database.isUserRegistered(attacker);
+                Boolean attackerEqualsDefender = attacker == defender;
+                if (regAttacker && regDefender && !attackerEqualsDefender)
+                {
+                    int unitsAttacker = _database.selectUnits(attacker);
+                    int unitsDefender = _database.selectUnits(defender);
+                    int dicesAttacker = unitsAttacker / 100;
+                    int dicesDefender = unitsDefender / 100;
+
+                    int attackerFinalValue=0;
+                    int defenderFinalValue=0;
+
+                    for(int i = 0; i < dicesAttacker; i++)
+                    {
+                        attackerFinalValue = attackerFinalValue + diceRoll();
+                    }
+
+                    for (int i = 0; i < dicesDefender; i++)
+                    {
+                        defenderFinalValue = defenderFinalValue + diceRoll();
+                    }
+
+                    if (attackerFinalValue > defenderFinalValue)
+                    {
+                        int goldAttacker = _database.selectGold(attacker);
+                        int goldDefender = _database.selectGold(defender);
+                        _database.updateGold(attacker, goldAttacker + goldDefender / 3);
+                        _database.updateGold(defender, goldDefender - goldDefender / 3);
+                        res = "The attacker won and looted " + goldDefender / 3 + " gold";
+                    }
+                    else
+                    {
+                        _database.updateUnits(attacker, unitsAttacker / 2);
+                        res = "The defender won and the attacker lost " + unitsAttacker / 2 + " units";
+                    }
+
+                }
+
+            }
+           
+            return res;
         }
 
         private string stats()
@@ -131,6 +177,13 @@ namespace CsharpRalphBot.Handler
         {
             string[] nameParts = name.Split('!');
             return nameParts[0];
+        }
+
+        private int diceRoll()
+        {
+            Random rnd = new Random();
+            int res = rnd.Next(1, 7);
+            return res;
         }
     }
 }
