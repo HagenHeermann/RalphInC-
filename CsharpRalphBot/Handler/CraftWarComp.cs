@@ -40,7 +40,7 @@ namespace CsharpRalphBot.Handler
                     res = attack(msg);
                     break;
                 case "#stats":
-                    res = stats();
+                    res = stats(msg);
                     break;
                 case "#commands":
                     res = getCommands();
@@ -153,9 +153,20 @@ namespace CsharpRalphBot.Handler
             return res;
         }
 
-        private string stats()
+        private string stats(IrcMessageData msg)
         {
-            return "stats";
+            string res = null;
+            string sender = realName(msg.From).ToLower();
+            Boolean senderRegistered = _database.isUserRegistered(sender);
+            if (senderRegistered)
+            {
+                int playerUnits = _database.selectUnits(sender);
+                int playerGold = _database.selectGold(sender);
+                int playerMine = _database.selectMine(sender);
+                int playerBarracks = _database.selectBarracks(sender);
+                res = sender + " Your base has: " + playerGold + " gold, " + playerUnits + " units, " + playerMine + " lvl mine, " + playerBarracks + " barracks.";
+            }
+            return res;
         }
 
         private string upgradeMine()
