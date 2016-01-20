@@ -12,3 +12,9 @@ C:\Users\Hagen\Desktop\ChatBot\C#Bot\RepoCS\CsharpRalphBot\obj\Debug\CsharpRalph
 C:\Users\Hagen\Desktop\ChatBot\C#Bot\RepoCS\CsharpRalphBot\bin\Debug\CsharpRalphBot.exe
 C:\Users\Hagen\Desktop\ChatBot\C#Bot\RepoCS\CsharpRalphBot\bin\Debug\CsharpRalphBot.pdb
 C:\Users\Hagen\Desktop\ChatBot\C#Bot\RepoCS\CsharpRalphBot\obj\Debug\CsharpRalphBot.csprojResolveAssemblyReference.cache
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\RepoCS\CsharpRalphBot\bin\Debug\SQLite.Designer.dll
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\RepoCS\CsharpRalphBot\bin\Debug\System.Data.SQLite.dll
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\RepoCS\CsharpRalphBot\bin\Debug\EnvDTE.dll
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\RepoCS\CsharpRalphBot\bin\Debug\stdole.dll
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\RepoCS\CsharpRalphBot\bin\Debug\SQLite.Designer.pdb
+C:\Users\Hagen\Desktop\ChatBot\C#Bot\RepoCS\CsharpRalphBot\bin\Debug\System.Data.SQLite.pdb

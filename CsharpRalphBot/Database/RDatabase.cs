@@ -7,7 +7,7 @@ using System.Data.SQLite;
 
 namespace CsharpRalphBot.Database
 {
-    class Database
+    class RDatabase
     {
         private SQLiteConnection _connection;
 
@@ -51,7 +51,10 @@ namespace CsharpRalphBot.Database
         /// <param name="username"></param>
         public void addPlayerToCraftWar(string username)
         {
-            string stmt = "";
+            string stmt = "INSERT INTO CraftWar (USERNAME,GOLD,BARRACKS,MINE,UNITS)VALUES('"+username+"',0,0,0,0)";
+            SQLiteCommand command = new SQLiteCommand(stmt, _connection);
+            command.ExecuteNonQuery();
+            DumberLogger.log("Database: Player added to table CraftWar");
         }
 
         //Select Section
@@ -62,7 +65,7 @@ namespace CsharpRalphBot.Database
         /// <returns></returns>
         public int selectGold(string username)
         {
-            string stmt = "";
+            string stmt = "SELECT GOLD FROM CraftWar WHERE USERNAME = '"+username+"'";
             return 0;
         }
 

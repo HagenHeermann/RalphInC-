@@ -24,16 +24,6 @@ namespace CsharpRalphBot
 
             Ralph ralph = new Ralph(channelIn, tokenIn, nameIn);
             ralph.connectRalph();
-            ralph.sendMessage("MingLee");
-
-            while (alive)
-            {
-                end = Console.ReadLine();
-                if (end == "kill")
-                {
-                    alive = false;
-                }
-            }
 
         }
 

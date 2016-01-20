@@ -36,11 +36,17 @@
     <Reference Include="Meebey.SmartIrc4net">
       <HintPath>..\..\..\Meebey.SmartIrc4net.dll</HintPath>
     </Reference>
+    <Reference Include="SQLite.Designer">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\System.Data.SQLite\2005\bin\SQLite.Designer.dll</HintPath>
+    </Reference>
     <Reference Include="StarkSoftProxy">
       <HintPath>..\..\..\StarkSoftProxy.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\System.Data.SQLite\2005\bin\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,8 +55,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handler\Handler.cs" />
-    <Compile Include="Handler\HandlerIdentifier.cs" />
+    <Compile Include="Database\RDatabase.cs" />
+    <Compile Include="Handler\CraftWarHandler.cs" />
+    <Compile Include="Handler\RHandler.cs" />
     <Compile Include="Utility\DumberLogger.cs" />
     <Compile Include="Main\Ralph.cs" />
     <Compile Include="Main\StartMeUp.cs" />
@@ -59,9 +66,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Database\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

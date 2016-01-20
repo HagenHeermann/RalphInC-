@@ -11,7 +11,7 @@ namespace CsharpRalphBot
         public static void log(string message)
         {
             string time = DateTime.Now.ToString("HH:mm:ss tt");
-            Console.WriteLine(time + "||" + message);
+            Console.WriteLine(time + " " + message);
         }
     }
 }

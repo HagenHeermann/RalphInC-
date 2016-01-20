@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace CsharpRalphBot.Handler
 {
-    class HandlerIdentifier
+    class CraftWarHandler:RHandler
     {
-        public void identifyEvent(string message)
-        {
 
-        }
     }
 }
