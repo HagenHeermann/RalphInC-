@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Meebey.SmartIrc4net;
+using CsharpRalphBot.Database;
 
 
 namespace CsharpRalphBot.Handler
@@ -11,6 +12,12 @@ namespace CsharpRalphBot.Handler
     class CraftWarComp : Component
     {
         private string[] commands = {"#attack","#stats","#commands","#upgrade","#buildBarracks","#buildUnits","#add"};
+        private RDatabase _database;
+
+        public CraftWarComp()
+        {
+            _database = new RDatabase();
+        }
 
         public override bool check(IrcMessageData msg)
         {
@@ -48,7 +55,7 @@ namespace CsharpRalphBot.Handler
                     res = buildUnits();
                     break;
                 case "#add":
-                    res = addPlayer();
+                    res = addPlayer(msg);
                     break;
                 default:
                     res = null;
@@ -57,14 +64,41 @@ namespace CsharpRalphBot.Handler
             return res;
         }
 
-        private string addPlayer()
+        private string addPlayer(IrcMessageData msg)
         {
-            return "player add";
+            string res;
+            string sender = realName(msg.From).ToLower();
+            if (sender == "voodoohood")
+            {
+                if(msg.MessageArray.Length >= 2)
+                {
+                    string userToAdd = msg.MessageArray[1].ToLower();
+                    _database.addPlayerToCraftWar(userToAdd);
+                    res = "User " + userToAdd + " added to registered players";
+                    DumberLogger.log(" CraftWarComp: Added user" + userToAdd + " to database, is registered " + _database.isUserRegistered(userToAdd));  
+                }
+                else
+                {
+                    res = null;
+                    DumberLogger.log(" CraftWarComp: Format of the message wasnt correct");
+                }
+            }
+            else
+            {
+                res = null;
+                DumberLogger.log(" CraftWarComp: User other than voodoohood tryed to add a user");
+            }
+            return res;
         }
 
         private string getCommands()
         {
-            return "commands";
+            string res="";
+            for(int i = 0; i < commands.Length; i++)
+            {
+                res = res +" | "+ commands[i];
+            }
+            return res;
         }
 
 
@@ -91,6 +125,12 @@ namespace CsharpRalphBot.Handler
         private string buildBarracks()
         {
             return "barracks";
+        }
+
+        private string realName(string name)
+        {
+            string[] nameParts = name.Split('!');
+            return nameParts[0];
         }
     }
 }

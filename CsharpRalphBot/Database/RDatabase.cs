@@ -173,6 +173,10 @@ namespace CsharpRalphBot.Database
             command.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Method to get all registered players
+        /// </summary>
+        /// <returns></returns>
         public string[] getAllPlayers()
         {
             List<string> resultB = new List<string>();
@@ -185,6 +189,22 @@ namespace CsharpRalphBot.Database
             }
             string[] result = resultB.ToArray();
             return result;
+        }
+        /// <summary>
+        /// Method to check if a player is registered
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public Boolean isUserRegistered(string username)
+        {
+            Boolean res = false;
+            string[] playerlist = getAllPlayers();
+            for(int i = 0; i < playerlist.Length; i++)
+            {
+                if (username == playerlist[i].ToLower()) res = true;
+            }
+                    
+            return res;
         }
     }
 }

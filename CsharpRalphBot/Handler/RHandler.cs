@@ -15,7 +15,6 @@ namespace CsharpRalphBot.Handler
         private Thread _handlerThread;
         private BlockingCollection<IrcMessageData> _messages;
         private Ralph _ralph;
-        private RDatabase _database;
         private List<Component> _components;
 
         public RHandler(Ralph _ralph)
@@ -24,7 +23,6 @@ namespace CsharpRalphBot.Handler
             this._ralph = _ralph;
             _handlerThread = new Thread(handle);
             _handlerThread.Start();
-            _database = new RDatabase();
             _components = new List<Component>();
             CraftWarComp craftcomp = new CraftWarComp();
             _components.Add(craftcomp);
@@ -47,7 +45,11 @@ namespace CsharpRalphBot.Handler
                 {
                     if (comps[i].check(mToHandle))
                     {
-                        _ralph.sendMessage(comps[i].handle(mToHandle));
+                        string msg = comps[i].handle(mToHandle);
+                        if (msg != null)
+                        {
+                            _ralph.sendMessage(msg);
+                        }
                         break;
                     }
                 }                
