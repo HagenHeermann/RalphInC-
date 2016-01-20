@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Collections.Concurrent;
 using Meebey.SmartIrc4net;
+using CsharpRalphBot.Database;
 
 namespace CsharpRalphBot.Handler
 {
@@ -14,6 +15,8 @@ namespace CsharpRalphBot.Handler
         private Thread _handlerThread;
         private BlockingCollection<IrcMessageData> _messages;
         private Ralph _ralph;
+        private RDatabase _database;
+        private List<Component> _components;
 
         public RHandler(Ralph _ralph)
         {
@@ -21,6 +24,10 @@ namespace CsharpRalphBot.Handler
             this._ralph = _ralph;
             _handlerThread = new Thread(handle);
             _handlerThread.Start();
+            _database = new RDatabase();
+            _components = new List<Component>();
+            CraftWarComp craftcomp = new CraftWarComp();
+            _components.Add(craftcomp);
             DumberLogger.log("Handler: Handler created");
         }
 
@@ -35,11 +42,15 @@ namespace CsharpRalphBot.Handler
             while (true)
             {
                 IrcMessageData mToHandle = _messages.Take();
-                if (mToHandle.MessageArray[0] == "#test")
+                Component[] comps = _components.ToArray();
+                for(int i = 0; i < _components.Count(); i++)
                 {
-                    _ralph.sendMessage("test");
-                }
-                
+                    if (comps[i].check(mToHandle))
+                    {
+                        _ralph.sendMessage(comps[i].handle(mToHandle));
+                        break;
+                    }
+                }                
             }
         }
 

@@ -11,6 +11,10 @@ namespace CsharpRalphBot.Database
     {
         private SQLiteConnection _connection;
 
+        public RDatabase()
+        {
+            connectToDatabase();
+        }
         /// <summary>
         /// One time use only
         /// working(tested)
