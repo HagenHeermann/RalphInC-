@@ -11,7 +11,7 @@ namespace CsharpRalphBot
     {
         static void Main(string[] args)
         {
-           
+            
             Boolean alive=true;
             string nameIn;
             string tokenIn;
@@ -27,7 +27,6 @@ namespace CsharpRalphBot
             Ralph ralph = new Ralph(channelIn, tokenIn, nameIn);
             ralph.connectRalph();
            
-
         }
 
     }

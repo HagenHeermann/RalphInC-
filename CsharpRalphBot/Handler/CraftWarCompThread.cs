@@ -35,10 +35,10 @@ namespace CsharpRalphBot.Handler
                 {
                     int goldUser = _database.selectGold(regUsers[i]);
                     int mineLevelUser = _database.selectMine(regUsers[i]);
-                    _database.updateGold(regUsers[i], goldUser + mineLevelUser * 5);
+                    _database.updateGold(regUsers[i], goldUser + mineLevelUser * 10);
                 }
                 DumberLogger.log(" CraftWarCompThreada: sleeping for two minutes");
-                Thread.Sleep(120000);
+                Thread.Sleep(60000);
             }
            
         }

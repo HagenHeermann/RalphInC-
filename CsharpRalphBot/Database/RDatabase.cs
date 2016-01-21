@@ -55,7 +55,7 @@ namespace CsharpRalphBot.Database
         /// <param name="username"></param>
         public void addPlayerToCraftWar(string username)
         {
-            string stmt = "INSERT INTO CraftWar (USERNAME,GOLD,BARRACKS,MINE,UNITS)VALUES('"+username+"',0,0,0,0)";
+            string stmt = "INSERT INTO CraftWar (USERNAME,GOLD,BARRACKS,MINE,UNITS)VALUES('"+username+"',0,0,1,0)";
             SQLiteCommand command = new SQLiteCommand(stmt, _connection);
             command.ExecuteNonQuery();
             DumberLogger.log("Database: Player added to table CraftWar");

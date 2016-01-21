@@ -22,6 +22,11 @@ namespace CsharpRalphBot.Handler
             craftWarThread.start();
         }
 
+        public override void ThreadTask()
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool check(IrcMessageData msg)
         {
             Boolean res = false;
@@ -167,7 +172,7 @@ namespace CsharpRalphBot.Handler
                 int playerGold = _database.selectGold(sender);
                 int playerMine = _database.selectMine(sender);
                 int playerBarracks = _database.selectBarracks(sender);
-                res = sender + " Your base has: " + playerGold + " gold, " + playerUnits + " units, " + playerMine + " lvl mine, " + playerBarracks + " barracks.";
+                res = sender + " Your base has: " + playerGold + " gold, " + playerUnits + " units, lvl " + playerMine + " mine, " + playerBarracks + " barracks.";
             }
             return res;
         }
@@ -185,7 +190,7 @@ namespace CsharpRalphBot.Handler
                 {
                     _database.updateMine(sender, playerMineLevel + 1);
                     _database.updateGold(sender, playerGold - (playerMineLevel * 100));
-                    res = sender + "'s mine was upgraded to level " + playerMineLevel + 1+".";
+                    res = sender + "'s mine was upgraded to level " + (playerMineLevel+1) +".";
                 }
                 else
                 {

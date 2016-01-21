@@ -12,6 +12,7 @@ namespace CsharpRalphBot.Handler
     {
         abstract public string handle(IrcMessageData msg);
         abstract public Boolean check(IrcMessageData msg);
+        abstract public void ThreadTask();
         
     }
 }
