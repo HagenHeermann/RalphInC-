@@ -13,10 +13,13 @@ namespace CsharpRalphBot.Handler
     {
         private string[] commands = {"#attack","#stats","#commands","#upgrade","#buildBarracks","#buildUnits","#add"};
         private RDatabase _database;
+        private CraftWarCompThread craftWarThread;
 
         public CraftWarComp()
         {
             _database = new RDatabase();
+            craftWarThread = new CraftWarCompThread(_database);
+            craftWarThread.start();
         }
 
         public override bool check(IrcMessageData msg)
@@ -49,10 +52,10 @@ namespace CsharpRalphBot.Handler
                     res = upgradeMine(msg);
                     break;
                 case "#buildBarracks":
-                    res = buildBarracks();
+                    res = buildBarracks(msg);
                     break;
                 case "#buildUnits":
-                    res = buildUnits();
+                    res = buildUnits(msg);
                     break;
                 case "#add":
                     res = addPlayer(msg);
@@ -74,7 +77,7 @@ namespace CsharpRalphBot.Handler
                 {
                     string userToAdd = msg.MessageArray[1].ToLower();
                     _database.addPlayerToCraftWar(userToAdd);
-                    res = "User " + userToAdd + " added to registered players";
+                    res = "User " + userToAdd + " added to the registered players .";
                     DumberLogger.log(" CraftWarComp: Added user" + userToAdd + " to database, is registered " + _database.isUserRegistered(userToAdd));  
                 }
                 else
@@ -138,12 +141,12 @@ namespace CsharpRalphBot.Handler
                         int goldDefender = _database.selectGold(defender);
                         _database.updateGold(attacker, goldAttacker + goldDefender / 3);
                         _database.updateGold(defender, goldDefender - goldDefender / 3);
-                        res = "The attacker won and looted " + goldDefender / 3 + " gold";
+                        res = "The attacker won and looted " + goldDefender / 3 + " gold !";
                     }
                     else
                     {
                         _database.updateUnits(attacker, unitsAttacker / 2);
-                        res = "The defender won and the attacker lost " + unitsAttacker / 2 + " units";
+                        res = "The defender won and the attacker lost " + unitsAttacker / 2 + " units !";
                     }
 
                 }
@@ -186,21 +189,89 @@ namespace CsharpRalphBot.Handler
                 }
                 else
                 {
-                    res = sender + " you dont have enough gold to upgrade your mine!";
+                    res = sender + " you can't afford the upgrade .";
                 }
                    
             }
             return res;
         }
 
-        private string buildUnits()
+        private string buildUnits(IrcMessageData msg)
         {
-            return "units";
+            DumberLogger.log(" CraftWarComp: User called buildUnits method");
+            string res = null;
+            string sender = realName(msg.From).ToLower();
+            Boolean senderRegistered = _database.isUserRegistered(sender);
+           
+            if(senderRegistered)
+            {
+                DumberLogger.log(" CraftWarComp: User is regstered");
+                Boolean barracksThere = false;
+                int barracksLevel = _database.selectBarracks(sender);
+                if (barracksLevel >= 1)
+                {
+                    barracksThere = true;
+                }
+
+                if (msg.MessageArray.Length >= 2 && barracksThere)
+                {
+                    DumberLogger.log(" CraftWarComp: Message length is ok and barracks are there");
+                    string unitCounts = msg.MessageArray[1];
+                    long unitCountl = (long)Convert.ToDouble(unitCounts);
+                    if (!(unitCountl < 0))
+                    {
+                        if (unitCountl <= 10000)
+                        {
+                            int senderGold = _database.selectGold(sender);
+                            long sumToPay = unitCountl * 100;
+                            if (sumToPay <= senderGold)
+                            {
+                                int unitssender = _database.selectUnits(sender);
+                                _database.updateGold(sender, senderGold - (int)sumToPay);
+                                _database.updateUnits(sender, unitssender + (int)unitCountl);
+                                res = unitCountl + " units were added to your garrison " + sender + " .";
+                            }
+                            else
+                            {
+                                res = "You can't afford that many units " + sender + " .";
+                            }
+                        }
+                        else
+                        {
+                            res = "You can only build max 10000 units at a time " + sender + " .";
+                        }
+                    }
+                }
+                else
+                {
+                    res = sender + " you don't have the barracks yet!";
+                }
+            }
+            return res;
         }
 
-        private string buildBarracks()
+        private string buildBarracks(IrcMessageData msg)
         {
-            return "barracks";
+            string res = null;
+            string sender = realName(msg.From).ToLower();
+            Boolean senderRegistered = _database.isUserRegistered(sender);
+            Boolean racksAlreadyAvailable = _database.selectBarracks(sender) >= 1;
+            if (senderRegistered&&!racksAlreadyAvailable)
+            {
+                int goldSender = _database.selectGold(sender);
+                int price = 200;
+                if (goldSender >= 200)
+                {
+                    _database.updateBarracks(sender, 1);
+                    _database.updateGold(sender, goldSender - 200);
+                    res = sender + " a Barracks has been built in your base .";
+                }
+                else
+                {
+                    res = sender + " you can't afford a barracks .";
+                }
+            }
+            return res;
         }
 
         private string realName(string name)

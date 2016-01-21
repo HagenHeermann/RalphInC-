@@ -206,5 +206,16 @@ namespace CsharpRalphBot.Database
                     
             return res;
         }
+
+        /// <summary>
+        /// Use this method do delete a player from the game
+        /// </summary>
+        /// <param name="username"></param>
+        public void dropUser(string username)
+        {
+            string stmt = "DELETE FROM CraftWar WHERE USERNAME='" + username + "'";
+            SQLiteCommand command = new SQLiteCommand(stmt, _connection);
+            command.ExecuteNonQuery();
+        }
     }
 }
