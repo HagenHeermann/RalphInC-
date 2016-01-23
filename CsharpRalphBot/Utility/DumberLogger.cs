@@ -8,7 +8,7 @@ namespace CsharpRalphBot
 {
     static class DumberLogger
     {
-        public static void log(string message)
+        public static void Log(string message)
         {
             string time = DateTime.Now.ToString("HH:mm:ss tt");
             Console.WriteLine(time + " " + message);

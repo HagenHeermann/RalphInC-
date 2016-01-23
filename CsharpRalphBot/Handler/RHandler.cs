@@ -7,6 +7,7 @@ using System.Threading;
 using System.Collections.Concurrent;
 using Meebey.SmartIrc4net;
 using CsharpRalphBot.Database;
+using CsharpRalphBot.Components;
 
 namespace CsharpRalphBot.Handler
 {
@@ -25,14 +26,18 @@ namespace CsharpRalphBot.Handler
             _handlerThread.Start();
             _components = new List<Component>();
             CraftWarComp craftcomp = new CraftWarComp();
+            UtilComponent utilcomp = new UtilComponent();
+            TwitchCasinoComponent casinocomp = new TwitchCasinoComponent(_ralph);
+            _components.Add(casinocomp);
             _components.Add(craftcomp);
-            DumberLogger.log("Handler: Handler created");
+            _components.Add(utilcomp);
+            DumberLogger.Log("Handler: Handler created");
         }
 
         public void addMessage(object sender,IrcEventArgs args)
         {
             _messages.Add(args.Data);
-            DumberLogger.log("Handler: Message added to q");
+            DumberLogger.Log("Handler: Message added to q");
         }
 
         public void handle()
@@ -43,9 +48,9 @@ namespace CsharpRalphBot.Handler
                 Component[] comps = _components.ToArray();
                 for(int i = 0; i < _components.Count(); i++)
                 {
-                    if (comps[i].check(mToHandle))
+                    if (comps[i].Check(mToHandle))
                     {
-                        string msg = comps[i].handle(mToHandle);
+                        string msg = comps[i].Handle(mToHandle);
                         if (msg != null)
                         {
                             _ralph.sendMessage(msg);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using CsharpRalphBot.Database;
 
-namespace CsharpRalphBot.Handler
+namespace CsharpRalphBot.Components
 {
     class CraftWarCompThread
     {
@@ -29,7 +29,7 @@ namespace CsharpRalphBot.Handler
         {
             while (1<2)
             {
-                DumberLogger.log(" CraftWarCompThread: started update");
+                DumberLogger.Log(" CraftWarCompThread: started update");
                 string[] regUsers = _database.getAllPlayers();
                 for(int i = 0; i < regUsers.Length; i++)
                 {
@@ -37,7 +37,7 @@ namespace CsharpRalphBot.Handler
                     int mineLevelUser = _database.selectMine(regUsers[i]);
                     _database.updateGold(regUsers[i], goldUser + mineLevelUser * 10);
                 }
-                DumberLogger.log(" CraftWarCompThreada: sleeping for two minutes");
+                DumberLogger.Log(" CraftWarCompThreada: sleeping for one minute");
                 Thread.Sleep(60000);
             }
            

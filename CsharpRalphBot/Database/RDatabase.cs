@@ -22,7 +22,7 @@ namespace CsharpRalphBot.Database
         public void createDatabase()
         {
             SQLiteConnection.CreateFile("RalphsDatabase.sqlite");
-            DumberLogger.log("Database: Database file created");
+            DumberLogger.Log("Database: Database file created");
         }
     
         /// <summary>
@@ -33,7 +33,7 @@ namespace CsharpRalphBot.Database
         {
             _connection = new SQLiteConnection("Data Source=RalphsDatabase.sqlite;Version=3;");
             _connection.Open();
-            DumberLogger.log("Database: Connection do database established");
+            DumberLogger.Log("Database: Connection do database established");
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace CsharpRalphBot.Database
             string stmt = "CREATE TABLE CraftWar (USERNAME VARCHAR(100) PRIMARY KEY NOT NULL,GOLD INT NOT NULL,BARRACKS INT NOT NULL,MINE INT NOT NULL,UNITS INT NOT NULL)";
             SQLiteCommand command = new SQLiteCommand(stmt, _connection);
             command.ExecuteNonQuery();
-            DumberLogger.log("Database: CraftWar table created");
+            DumberLogger.Log("Database: CraftWar table created");
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace CsharpRalphBot.Database
             string stmt = "INSERT INTO CraftWar (USERNAME,GOLD,BARRACKS,MINE,UNITS)VALUES('"+username+"',0,0,1,0)";
             SQLiteCommand command = new SQLiteCommand(stmt, _connection);
             command.ExecuteNonQuery();
-            DumberLogger.log("Database: Player added to table CraftWar");
+            DumberLogger.Log("Database: Player added to table CraftWar");
         }
 
         //Select Section

@@ -53,11 +53,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\FunComponent.cs" />
+    <Compile Include="Components\TwitchCasinoComponent.cs" />
     <Compile Include="Database\RDatabase.cs" />
-    <Compile Include="Handler\Component.cs" />
-    <Compile Include="Handler\CraftWarComp.cs" />
-    <Compile Include="Handler\CraftWarCompThread.cs" />
+    <Compile Include="Components\Component.cs" />
+    <Compile Include="Components\CraftWarComp.cs" />
+    <Compile Include="Components\CraftWarCompThread.cs" />
+    <Compile Include="Handler\ComponentThreadsHandler.cs" />
     <Compile Include="Handler\RHandler.cs" />
+    <Compile Include="Components\UtilComponent.cs" />
     <Compile Include="Utility\DumberLogger.cs" />
     <Compile Include="Main\Ralph.cs" />
     <Compile Include="Main\StartMeUp.cs" />
@@ -66,7 +70,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Enums\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using Meebey.SmartIrc4net;
 
 
-namespace CsharpRalphBot.Handler
+namespace CsharpRalphBot.Components
 {
     abstract class Component
     {
-        abstract public string handle(IrcMessageData msg);
-        abstract public Boolean check(IrcMessageData msg);
+        abstract public string Handle(IrcMessageData msg);
+        abstract public Boolean Check(IrcMessageData msg);
         abstract public void ThreadTask();
-        
+
     }
 }

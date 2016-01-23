@@ -7,19 +7,21 @@ using Meebey.SmartIrc4net;
 using CsharpRalphBot.Database;
 
 
-namespace CsharpRalphBot.Handler
+namespace CsharpRalphBot.Components
 {
     class CraftWarComp : Component
     {
-        private string[] commands = {"#attack","#stats","#commands","#upgrade","#buildBarracks","#buildUnits","#add"};
+        private string[] commands = {"#attack","#stats","#commands","#upgrade","#buildBarracks","#buildUnits","#add","#maxupgrade","#maxunits"};
         private RDatabase _database;
         private CraftWarCompThread craftWarThread;
+        private Random _randomObject;
 
         public CraftWarComp()
         {
             _database = new RDatabase();
             craftWarThread = new CraftWarCompThread(_database);
             craftWarThread.start();
+            _randomObject = new Random();
         }
 
         public override void ThreadTask()
@@ -27,9 +29,9 @@ namespace CsharpRalphBot.Handler
             throw new NotImplementedException();
         }
 
-        public override bool check(IrcMessageData msg)
+        public override bool Check(IrcMessageData msg)
         {
-            Boolean res = false;
+            bool res = false;
             string com = msg.MessageArray[0];
             for(int i = 0; i < commands.Length; i++)
             {
@@ -38,32 +40,38 @@ namespace CsharpRalphBot.Handler
             return res;
         }
 
-        public override string handle(IrcMessageData msg)
+        public override string Handle(IrcMessageData msg)
         {
             string res;
             string com = msg.MessageArray[0];
             switch (com)
             {
                 case "#attack":
-                    res = attack(msg);
+                    res = Attack(msg);
                     break;
                 case "#stats":
-                    res = stats(msg);
+                    res = Stats(msg);
                     break;
                 case "#commands":
-                    res = getCommands();
+                    res = GetCommands();
                     break;
                 case "#upgrade":
-                    res = upgradeMine(msg);
+                    res = UpgradeMine(msg);
                     break;
                 case "#buildBarracks":
-                    res = buildBarracks(msg);
+                    res = BuildBarracks(msg);
                     break;
                 case "#buildUnits":
-                    res = buildUnits(msg);
+                    res = BuildUnits(msg);
                     break;
                 case "#add":
-                    res = addPlayer(msg);
+                    res = AddPlayer(msg);
+                    break;
+                case "#maxupgrade":
+                    res = Maxupgrade(msg);
+                    break;
+                case "#maxunits":
+                    res = MaxUnits(msg);
                     break;
                 default:
                     res = null;
@@ -72,34 +80,43 @@ namespace CsharpRalphBot.Handler
             return res;
         }
 
-        private string addPlayer(IrcMessageData msg)
+        private string AddPlayer(IrcMessageData msg)
         {
             string res;
-            string sender = realName(msg.From).ToLower();
+            string sender = RealName(msg.From).ToLower();
             if (sender == "voodoohood")
             {
                 if(msg.MessageArray.Length >= 2)
                 {
                     string userToAdd = msg.MessageArray[1].ToLower();
-                    _database.addPlayerToCraftWar(userToAdd);
-                    res = "User " + userToAdd + " added to the registered players .";
-                    DumberLogger.log(" CraftWarComp: Added user" + userToAdd + " to database, is registered " + _database.isUserRegistered(userToAdd));  
+                    bool playerAlreadyRegistered = _database.isUserRegistered(userToAdd);
+                    if (!playerAlreadyRegistered)
+                    {
+                        _database.addPlayerToCraftWar(userToAdd);
+                        res = "User " + userToAdd + " added to the registered players .";
+                        DumberLogger.Log(" CraftWarComp: Added user" + userToAdd + " to database, is registered " + _database.isUserRegistered(userToAdd));
+                    }
+                    else
+                    {
+                        res = "User " + userToAdd + " is already registered";
+                    }
+                      
                 }
                 else
                 {
                     res = null;
-                    DumberLogger.log(" CraftWarComp: Format of the message wasnt correct");
+                    DumberLogger.Log(" CraftWarComp: Format of the message wasnt correct");
                 }
             }
             else
             {
                 res = null;
-                DumberLogger.log(" CraftWarComp: User other than voodoohood tryed to add a user");
+                DumberLogger.Log(" CraftWarComp: User other than voodoohood tryed to add a user");
             }
             return res;
         }
 
-        private string getCommands()
+        private string GetCommands()
         {
             string res="";
             for(int i = 0; i < commands.Length; i++)
@@ -110,13 +127,13 @@ namespace CsharpRalphBot.Handler
         }
 
 
-        private string attack(IrcMessageData msg)
+        private string Attack(IrcMessageData msg)
         {
             String res = null;
             if (msg.MessageArray.Length >= 2)
             {
-                string attacker = realName(msg.From).ToLower();
-                string defender = realName(msg.MessageArray[1]).ToLower();
+                string attacker = RealName(msg.From).ToLower();
+                string defender = RealName(msg.MessageArray[1]).ToLower();
                 Boolean regDefender = _database.isUserRegistered(defender);
                 Boolean regAttacker = _database.isUserRegistered(attacker);
                 Boolean attackerEqualsDefender = attacker == defender;
@@ -124,20 +141,22 @@ namespace CsharpRalphBot.Handler
                 {
                     int unitsAttacker = _database.selectUnits(attacker);
                     int unitsDefender = _database.selectUnits(defender);
-                    int dicesAttacker = unitsAttacker / 100;
-                    int dicesDefender = unitsDefender / 100;
+                    int dicesAttacker = unitsAttacker / 10;
+                    int dicesDefender = unitsDefender / 10;
+                    if (dicesAttacker == 0) dicesAttacker = 1;
+                    if (dicesDefender == 0) dicesDefender = 1;
 
                     int attackerFinalValue=0;
                     int defenderFinalValue=0;
 
                     for(int i = 0; i < dicesAttacker; i++)
                     {
-                        attackerFinalValue = attackerFinalValue + diceRoll();
+                        attackerFinalValue = attackerFinalValue + DiceRoll();
                     }
 
                     for (int i = 0; i < dicesDefender; i++)
                     {
-                        defenderFinalValue = defenderFinalValue + diceRoll();
+                        defenderFinalValue = defenderFinalValue + DiceRoll();
                     }
 
                     if (attackerFinalValue > defenderFinalValue)
@@ -146,12 +165,12 @@ namespace CsharpRalphBot.Handler
                         int goldDefender = _database.selectGold(defender);
                         _database.updateGold(attacker, goldAttacker + goldDefender / 3);
                         _database.updateGold(defender, goldDefender - goldDefender / 3);
-                        res = "The attacker won and looted " + goldDefender / 3 + " gold !";
+                        res = "The attacker(with a roll of "+attackerFinalValue+") won and looted " + goldDefender / 3 + " gold from the defender (with a roll of "+defenderFinalValue+")!";
                     }
                     else
                     {
                         _database.updateUnits(attacker, unitsAttacker / 2);
-                        res = "The defender won and the attacker lost " + unitsAttacker / 2 + " units !";
+                        res = "The defender won(with a roll of "+defenderFinalValue+") and the attacker lost " + unitsAttacker / 2 + " units (with a roll of "+attackerFinalValue+") !";
                     }
 
                 }
@@ -161,10 +180,10 @@ namespace CsharpRalphBot.Handler
             return res;
         }
 
-        private string stats(IrcMessageData msg)
+        private string Stats(IrcMessageData msg)
         {
             string res = null;
-            string sender = realName(msg.From).ToLower();
+            string sender = RealName(msg.From).ToLower();
             Boolean senderRegistered = _database.isUserRegistered(sender);
             if (senderRegistered)
             {
@@ -177,10 +196,10 @@ namespace CsharpRalphBot.Handler
             return res;
         }
 
-        private string upgradeMine(IrcMessageData msg)
+        private string UpgradeMine(IrcMessageData msg)
         {
             string res = null;
-            string sender = realName(msg.From).ToLower();
+            string sender = RealName(msg.From).ToLower();
             Boolean senderRegistered = _database.isUserRegistered(sender);
             if (senderRegistered)
             {
@@ -201,16 +220,16 @@ namespace CsharpRalphBot.Handler
             return res;
         }
 
-        private string buildUnits(IrcMessageData msg)
+        private string BuildUnits(IrcMessageData msg)
         {
-            DumberLogger.log(" CraftWarComp: User called buildUnits method");
+            DumberLogger.Log(" CraftWarComp: User called buildUnits method");
             string res = null;
-            string sender = realName(msg.From).ToLower();
+            string sender = RealName(msg.From).ToLower();
             Boolean senderRegistered = _database.isUserRegistered(sender);
            
             if(senderRegistered)
             {
-                DumberLogger.log(" CraftWarComp: User is regstered");
+                DumberLogger.Log(" CraftWarComp: User is regstered");
                 Boolean barracksThere = false;
                 int barracksLevel = _database.selectBarracks(sender);
                 if (barracksLevel >= 1)
@@ -220,7 +239,7 @@ namespace CsharpRalphBot.Handler
 
                 if (msg.MessageArray.Length >= 2 && barracksThere)
                 {
-                    DumberLogger.log(" CraftWarComp: Message length is ok and barracks are there");
+                    DumberLogger.Log(" CraftWarComp: Message length is ok and barracks are there");
                     string unitCounts = msg.MessageArray[1];
                     long unitCountl = (long)Convert.ToDouble(unitCounts);
                     if (!(unitCountl < 0))
@@ -255,10 +274,10 @@ namespace CsharpRalphBot.Handler
             return res;
         }
 
-        private string buildBarracks(IrcMessageData msg)
+        private string BuildBarracks(IrcMessageData msg)
         {
             string res = null;
-            string sender = realName(msg.From).ToLower();
+            string sender = RealName(msg.From).ToLower();
             Boolean senderRegistered = _database.isUserRegistered(sender);
             Boolean racksAlreadyAvailable = _database.selectBarracks(sender) >= 1;
             if (senderRegistered&&!racksAlreadyAvailable)
@@ -279,16 +298,56 @@ namespace CsharpRalphBot.Handler
             return res;
         }
 
-        private string realName(string name)
+        private string Maxupgrade(IrcMessageData msg)
+        {
+            string res = null;
+            string sender = RealName(msg.From).ToLower();
+            bool senderRegistered = _database.isUserRegistered(sender);
+            if (senderRegistered)
+            {
+                int count=0;
+                while (_database.selectGold(sender) > (_database.selectMine(sender)*100))
+                {
+                    int senderGold = _database.selectGold(sender);
+                    int senderMineLevel = _database.selectMine(sender);
+                    _database.updateGold(sender,senderGold - (senderMineLevel * 100));
+                    _database.updateMine(sender, senderMineLevel + 1);
+                    count++;
+                }
+                int finalMineLevel = _database.selectMine(sender);
+                res = sender + " your mine has been upgraded " + count + " times to a final level of " + finalMineLevel+".";
+            }
+         
+            return res;
+        }
+
+        private string MaxUnits(IrcMessageData msg)
+        {
+            string res = null;
+            string sender = RealName(msg.From).ToLower();
+            bool senderRegistered = _database.isUserRegistered(sender);
+            if (senderRegistered)
+            {
+                var senderGold = _database.selectGold(sender);
+                var senderUnits = _database.selectUnits(sender);
+                var maxUnits = senderGold / 100;
+                _database.updateGold(sender, senderGold - (maxUnits * 100));
+                _database.updateUnits(sender, senderUnits + maxUnits);
+                res = sender + " " + maxUnits + " were added to your garrison.";
+
+            }
+            return res;
+        }
+
+        private string RealName(string name)
         {
             string[] nameParts = name.Split('!');
             return nameParts[0];
         }
 
-        private int diceRoll()
+        private int DiceRoll()
         {
-            Random rnd = new Random();
-            int res = rnd.Next(1, 7);
+            int res = _randomObject.Next(1, 7);
             return res;
         }
     }

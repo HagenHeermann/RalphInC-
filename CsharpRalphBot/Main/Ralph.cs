@@ -36,7 +36,7 @@ namespace CsharpRalphBot
             {
                 Encoding = Encoding.UTF8,
                 ActiveChannelSyncing = true,
-                SendDelay = 200,
+                SendDelay = 5000,
                 AutoRejoin = true,
                 AutoRejoinOnKick = true,
                 AutoReconnect = true,
@@ -48,36 +48,36 @@ namespace CsharpRalphBot
             _client.OnRawMessage += logMessage;
             _handler = new RHandler(this);
 
-            DumberLogger.log("Ralph: ralph got created");
+            DumberLogger.Log("Ralph: ralph got created");
         }
 
         public void connectRalph()
         {
             _client.Connect(Server, portnum);
-            DumberLogger.log("Ralph: connected to server");
+            DumberLogger.Log("Ralph: connected to server");
             _client.Login(_name, _name, 0, _name, _token);
-            DumberLogger.log("Ralph: logged in");
+            DumberLogger.Log("Ralph: logged in");
             _client.RfcJoin(_channel);
-            DumberLogger.log("" + _client.IsJoined("ashwinitv"));
+            DumberLogger.Log("" + _client.IsJoined("ashwinitv"));
             _client.Listen();
         }        
 
         public void sendMessage(string message)
         {
             _client.SendMessage(SendType.Message, _channel, message);
-            DumberLogger.log("Ralph: message send");
+            DumberLogger.Log("Ralph: message send");
         }
 
         public void onMessage(object sender,IrcEventArgs args)
         {
-            DumberLogger.log("Ralph: trying to add message to the handler");
+            DumberLogger.Log("Ralph: trying to add message to the handler");
             _handler.addMessage(sender, args);
         }
 
         public void logMessage(object sender,IrcEventArgs args)
         {
             IrcMessageData mess = args.Data;
-            DumberLogger.log(mess.Message);
+            DumberLogger.Log(mess.Message);
         }
 
     }
